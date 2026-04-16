@@ -1,0 +1,45 @@
+/* Esto hace que la pantalla se divida en dos paneles */
+.login-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr; /* Panel azul un poco más ancho */
+    min-height: 100vh;
+    align-items: stretch;
+    gap: 0;
+}
+
+/* Ajuste para que en celulares se vea uno arriba del otro */
+@media (max-width: 768px) {
+    .login-layout {
+        grid-template-columns: 1fr;
+    }
+}
+:root {
+    /* El azul oscuro que usaste en el panel izquierdo del login */
+    --sidebar-bg: #0d4761; 
+    --navbar-bg: #ffffff;
+    --accent-color: #ff9800; /* El naranja del logo */
+}
+
+/* El encabezado del sidebar ahora será oscuro como el login */
+#sidebar .sidebar-header { 
+    background: #0d4761; 
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
+}
+
+/* Color del texto del logo en el dashboard */
+#sidebar .sidebar-header h4 { color: #ffffff !important; }
+#sidebar .sidebar-header span { color: #ff9800 !important; }
+#sidebar ul li a {
+    color: rgba(255, 255, 255, 0.8); /* Blanco suave para que no canse la vista */
+}
+
+#sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+#sidebar ul li.active > a {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--accent-color);
+    border-right: 4px solid var(--accent-color);
+}

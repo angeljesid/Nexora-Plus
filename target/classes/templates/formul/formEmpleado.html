@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexora Plus - Registro de Empleado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .main-body { 
+            padding: 40px; min-height: 100vh;
+            background-repeat: repeat; background-attachment: fixed; background-size: 1000px;
+        }
+        .card-form { background: #fff; border-radius: 15px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        .btn-save { background-color: #0d4761; color: white; }
+        .btn-save:hover { background-color: #0a3547; color: white; }
+    </style>
+</head>
+<body class="main-body" th:style="'background-image: url(' + @{/imagenes/fondo-patron.png} + ');'">
+
+    <div class="container mt-5">
+        <div class="card card-form p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold" style="color: #0d4761;">Formulario de Empleado</h2>
+                <p class="text-muted">Complete la información del colaborador</p>
+            </div>
+
+            <form th:action="@{/admin/guardar_e}" th:object="${empleado}" method="post">
+                
+                <input type="hidden" th:field="*{idEmpleado}"/>
+
+<div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Cédula</label>
+                        <input type="text" th:field="*{cedula}" class="form-control" placeholder="Ej: 10102020">
+                        <small class="text-danger" th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"></small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Nombre</label>
+                        <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Marta">
+                        <small class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Apellido</label>
+                        <input type="text" th:field="*{apellido}" class="form-control" placeholder="Ej: Pérez">
+                        <small class="text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Edad</label>
+                        <input type="number" th:field="*{edad}" class="form-control" placeholder="30">
+                        <small class="text-danger" th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}"></small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Correo Electrónico</label>
+                        <input type="email" th:field="*{correo}" class="form-control" placeholder="marta@nexora.com">
+                        <small class="text-danger" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Teléfono</label>
+                        <input type="text" th:field="*{telefono}" class="form-control" placeholder="3001234567">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Rol</label>
+                        <select th:field="*{rol}" class="form-select">
+                            <option value="">Seleccione...</option>
+                            <option th:each="r : ${T(com.clasedominio.domain.Empleado.Rol).values()}" 
+                                    th:value="${r}" th:text="${r}"></option>
+                        </select>
+                        <small class="text-danger" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+    <label class="form-label fw-bold">Fecha de Ingreso</label>
+    <input type="date" th:field="*{fechaIngreso}" class="form-control">
+    <small class="text-danger" th:if="${#fields.hasErrors('fechaIngreso')}" th:errors="*{fechaIngreso}"></small>
+</div>
+                </div>
+
+                <div class="mb-3 form-check ms-2">
+                    <input type="checkbox" th:field="*{activo}" class="form-check-input" id="activoCheck">
+                    <label class="form-check-label fw-bold" for="activoCheck">Empleado Activo</label>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/admin/empleados}" class="btn btn-light border">Cancelar</a>
+                    <button type="submit" class="btn btn-save px-5">
+                        <i class="bi bi-check-circle me-1"></i> Guardar Empleado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
