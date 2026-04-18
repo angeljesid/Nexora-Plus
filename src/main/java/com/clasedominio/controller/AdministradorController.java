@@ -50,6 +50,21 @@ public class AdministradorController {
     private PasswordEncoder passwordEncoder;
 
     // ==========================================
+    // SECCIÓN 0: INICIO / BIENVENIDA
+    // ==========================================
+    @GetMapping("/inicio")
+    public String inicioAdmin(Model model, Authentication authentication) {
+        if (authentication != null) {
+            String username = authentication.getName();
+            Empleado empleado = empleadoService.buscarPorUsername(username);
+            if (empleado != null) {
+                model.addAttribute("nombreCompleto", empleado.getNombre() + " " + empleado.getApellido());
+            }
+        }
+        return "vista/inicio";
+    }
+
+    // ==========================================
     // SECCIÓN 1: INDIVIDUOS (CLIENTES/GENERAL)
     // ==========================================
 

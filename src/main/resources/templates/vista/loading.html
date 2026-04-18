@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora Plus - Gestión Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        /* DESPLAZAMIENTO SUAVE */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* INTEGRACIÓN DE IMAGEN DE FONDO */
+            background-image: url('/imagenes/fondo-patron.png');
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        section {
+            scroll-margin-top: 5rem; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">N</div>
+                    <span class="text-xl font-bold tracking-tight text-blue-900">Nexora<span class="text-blue-500">Plus</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#que-es" class="hover:text-blue-600 transition-colors duration-300">¿Qué es?</a>
+                    <a href="#beneficios" class="hover:text-blue-600 transition-colors duration-300">Beneficios</a>
+                    <a href="#caracteristicas" class="hover:text-blue-600 transition-colors duration-300">Características</a>
+                </div>
+                <div>
+                    <a th:href="@{/login}" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                        Pruébalo Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative pt-16 pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
+                    Lleva tu empresa al <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">siguiente nivel operativo</span>
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
+                    Nexora Plus es la plataforma integral diseñada para centralizar tus operaciones, optimizar recursos y potenciar el crecimiento de tu negocio en un solo lugar.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a th:href="@{/login}" class="inline-block">
+                        <button type="button" class="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all transform hover:-translate-y-1">
+                            Empezar Ahora
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-10">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-blue-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-indigo-400 rounded-full blur-3xl"></div>
+        </div>
+    </header>
+
+    <section id="que-es" class="py-20 bg-white/60 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6 text-gray-900 underline decoration-blue-500 decoration-4 underline-offset-8">¿Qué es Nexora Plus?</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Nexora Plus no es solo una herramienta, es un ecosistema digital robusto nacido de la necesidad de simplificar la complejidad empresarial. Hemos desarrollado una arquitectura escalable que integra módulos financieros, operativos y de gestión humana.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        Nuestra misión es eliminar los silos de información, permitiendo que cada miembro de tu equipo trabaje sobre datos reales y actualizados en tiempo real.
+                    </p>
+                </div>
+                <div class="bg-gray-100/80 rounded-3xl p-8 aspect-video flex items-center justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-600/5 group-hover:bg-blue-600/0 transition-all"></div>
+                    <i class="fas fa-project-diagram text-8xl text-blue-200"></i>
+                    <p class="absolute bottom-4 text-xs text-gray-400 font-mono italic">[Vista previa de la interfaz de dashboard]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="beneficios" class="py-20 bg-gray-50/60 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900">¿Cómo te ayudamos?</h2>
+            <p class="text-gray-600 mt-4">Diseñado para resolver los problemas reales del día a día.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8">
+            <div class="bg-white/90 p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fas fa-bolt text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Automatización Total</h3>
+                <p class="text-gray-600 text-sm">Reduce tareas repetitivas y errores humanos mediante flujos de trabajo inteligentes que trabajan por ti.</p>
+            </div>
+            <div class="bg-white/90 p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fas fa-chart-line text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Decisiones Basadas en Datos</h3>
+                <p class="text-gray-600 text-sm">Accede a reportes detallados y analítica avanzada para saber exactamente dónde está parado tu negocio.</p>
+            </div>
+            <div class="bg-white/90 p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fas fa-shield-alt text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Seguridad y Control</h3>
+                <p class="text-gray-600 text-sm">Toda tu información protegida con estándares bancarios y control de permisos granular por usuario.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="caracteristicas" class="py-20 bg-white/60 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-blue-600 font-semibold tracking-widest uppercase text-xs">Ecosistema Nexora</span>
+                <h2 class="text-4xl font-bold mt-2">Características Principales</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 border-b-2 border-transparent hover:border-blue-500 transition-all bg-white/40">
+                    <h4 class="font-bold mb-2">Multi-dispositivo</h4>
+                    <p class="text-sm text-gray-500">Accede desde cualquier lugar con una interfaz responsiva.</p>
+                </div>
+                <div class="p-6 border-b-2 border-transparent hover:border-blue-500 transition-all bg-white/40">
+                    <h4 class="font-bold mb-2">API Robusta</h4>
+                    <p class="text-sm text-gray-500">Integración sencilla con otras herramientas que ya utilizas.</p>
+                </div>
+                <div class="p-6 border-b-2 border-transparent hover:border-blue-500 transition-all bg-white/40">
+                    <h4 class="font-bold mb-2">Escalabilidad</h4>
+                    <p class="text-sm text-gray-500">Crece de 1 a 10,000 usuarios sin perder rendimiento.</p>
+                </div>
+                <div class="p-6 border-b-2 border-transparent hover:border-blue-500 transition-all bg-white/40">
+                    <h4 class="font-bold mb-2">Soporte 24/7</h4>
+                    <p class="text-sm text-gray-500">Estamos contigo en cada paso de la implementación.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="gradient-bg rounded-3xl p-12 text-center text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">¿Listo para transformar tu gestión?</h2>
+                    <p class="mb-10 text-blue-100 text-lg">Únete a las empresas que ya están optimizando su futuro con Nexora Plus.</p>
+                    <a th:href="@{/login}" class="bg-white text-blue-700 px-10 py-4 rounded-full font-bold hover:bg-gray-100 transition shadow-lg inline-block">
+                        Comenzar Ahora - Es Gratis
+                    </a>
+                </div>
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-6">
+                <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-xs">N</div>
+                <span class="text-lg font-bold text-white">Nexora Plus</span>
+            </div>
+            <p class="text-sm mb-6">Impulsando la eficiencia empresarial a través de la innovación tecnológica.</p>
+            <p class="text-xs">&copy; 2026 Nexora Plus. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

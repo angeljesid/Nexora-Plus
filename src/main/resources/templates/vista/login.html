@@ -25,8 +25,10 @@
             align-items: center;
             justify-content: center;
             background-image: url('/imagenes/fondo-patron.png');
-            background-size: 1000px;
-        }
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            }
 
         .login-layout {
             display: grid;
@@ -48,11 +50,17 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .logo-img {
-            max-width: 140px;
-            margin-bottom: 30px;
+            width: 180px;      
+            height: auto;   
+            display: block;  
+            margin-bottom: 1rem;  
+            object-fit: contain;
+            background-image: none !important; 
         }
 
         .page-title { font-size: 3rem; margin-bottom: 10px; }
@@ -138,7 +146,6 @@
             Sesión cerrada correctamente
         </div>
 
-        <!-- 🔥 CAMBIO AQUÍ -->
         <form th:action="@{/procesar-login}" method="post">
             
             <div class="form-group">

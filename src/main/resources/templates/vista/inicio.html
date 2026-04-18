@@ -27,14 +27,13 @@
             <div class="sidebar-header text-center">
                 <h4 class="fw-bold mb-0">Nexora<span style="color: #DAA520;"> Plus</span></h4>
             </div>
-            <ul class="list-unstyled components">
-                <li><a th:href="@{admin/individuos}"><i class="bi bi-people-fill me-2"></i> Gestión Clientes</a></li>
-                <li><a th:href="@{admin/productos}"><i class="bi bi-box-seam me-2"></i> Gestión de productos</a></li>
-                <li><a th:href="@{admin/empleados}"><i class="bi bi-person-badge-fill me-2"></i> Gestión de empleados</a></li>
-                <li><a th:href="@{admin/proveedores}"><i class="bi bi-truck me-2"></i> Gestión de proveedores</a></li>
-                <li><a th:href="@{admin/ventas}"><i class="bi bi-currency-dollar me-2"></i> Gestión de ventas</a></li>
-                <li><a th:href="@{admin/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Panel de Control</a></li>
-            </ul>
+<ul class="list-unstyled components">
+    <li><a th:href="@{/admin/individuos}"><i class="bi bi-people-fill me-2"></i> Gestión Clientes</a></li>
+    <li><a th:href="@{/admin/productos}"><i class="bi bi-box-seam me-2"></i> Gestión de productos</a></li>
+    <li><a th:href="@{/admin/empleados}"><i class="bi bi-person-badge-fill me-2"></i> Gestión de empleados</a></li>
+    <li><a th:href="@{/admin/proveedores}"><i class="bi bi-truck me-2"></i> Gestión de proveedores</a></li>
+    <li><a th:href="@{/admin/dashboard}"><i class="bi bi-speedometer2 me-2"></i> Panel de Control</a></li>
+</ul>
             <div class="p-4 mt-5">
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="btn btn-outline-danger w-100">Cerrar sesión</button>

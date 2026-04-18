@@ -24,39 +24,52 @@ public DaoAuthenticationProvider authProvider(UsuarioDetailsService service) {
     auth.setPasswordEncoder(passwordEncoder());
     return auth;
 }
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,
-                                           DaoAuthenticationProvider authProvider) throws Exception {
+  @Bean
+public SecurityFilterChain filterChain(HttpSecurity http,
+                                       DaoAuthenticationProvider authProvider) throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable()) 
-            .authenticationProvider(authProvider)
+    http
+        .csrf(csrf -> csrf.disable()) 
+        .authenticationProvider(authProvider)
 
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/imagenes/**").permitAll()
-                .requestMatchers("/login").permitAll()
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/css/**", "/js/**", "/imagenes/**").permitAll()
+            // AGREGAMOS "/" para que la landing sea pública
+            .requestMatchers("/", "/login").permitAll() 
 
-                .requestMatchers("/vendedor/**").hasRole("VENDEDOR")
-                .requestMatchers("/bodega/**", "/admin/productos/**").hasAnyRole("BODEGUERO", "ADMIN")
-                .requestMatchers("/secretaria/**").hasAnyRole("SECRETARIA", "ADMIN")
+            .requestMatchers("/vendedor/**").hasRole("VENDEDOR")
+            .requestMatchers("/bodega/**", "/admin/productos/**").hasAnyRole("BODEGUERO", "ADMIN")
+            .requestMatchers("/secretaria/**").hasAnyRole("SECRETARIA", "ADMIN")
+            .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        )
 
-                .anyRequest().authenticated()
-            )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/procesar-login") 
+            // CAMBIAMOS ESTO por un SuccessHandler para que redirija según el rol
+            .successHandler((request, response, authentication) -> {
+                var roles = authentication.getAuthorities().stream()
+                        .map(r -> r.getAuthority())
+                        .toList();
+                
+                if (roles.contains("ROLE_ADMIN")) {
+                    response.sendRedirect("/admin/inicio");
+                } else if (roles.contains("ROLE_VENDEDOR")) {
+                    response.sendRedirect("/vendedor/inicio");
+                } else {
+                    response.sendRedirect("/"); // Por defecto si no tiene rol conocido
+                }
+            })
+            .permitAll()
+        )
 
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/procesar-login") 
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-            )
+        .logout(logout -> logout
+            .logoutSuccessUrl("/login?logout")
+            .permitAll()
+        );
 
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-            );
-
-        return http.build();
-    }
+    return http.build();
+}
 }
