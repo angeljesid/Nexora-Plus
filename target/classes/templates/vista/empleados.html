@@ -27,7 +27,12 @@
         }
     </style>
 </head>
-<body class="main-body" th:style="'background-image: url(' + @{/imagenes/fondo-patron.png} + ');'">
+<body class="main-body" 
+      th:style="'background-image: url(' + @{/imagenes/fondo-patron.png} + '); 
+                background-size: cover; 
+                background-position: center; 
+                background-attachment: fixed; 
+                background-repeat: no-repeat;'">
 
     <div class="container">
         <div class="card card-custom p-4">
