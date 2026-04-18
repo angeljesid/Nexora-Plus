@@ -34,7 +34,6 @@ public SecurityFilterChain filterChain(HttpSecurity http,
 
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/css/**", "/js/**", "/imagenes/**").permitAll()
-            // AGREGAMOS "/" para que la landing sea pública
             .requestMatchers("/", "/login").permitAll() 
 
             .requestMatchers("/vendedor/**").hasRole("VENDEDOR")
@@ -48,7 +47,6 @@ public SecurityFilterChain filterChain(HttpSecurity http,
         .formLogin(form -> form
             .loginPage("/login")
             .loginProcessingUrl("/procesar-login") 
-            // CAMBIAMOS ESTO por un SuccessHandler para que redirija según el rol
             .successHandler((request, response, authentication) -> {
                 var roles = authentication.getAuthorities().stream()
                         .map(r -> r.getAuthority())
@@ -59,7 +57,7 @@ public SecurityFilterChain filterChain(HttpSecurity http,
                 } else if (roles.contains("ROLE_VENDEDOR")) {
                     response.sendRedirect("/vendedor/inicio");
                 } else {
-                    response.sendRedirect("/"); // Por defecto si no tiene rol conocido
+                    response.sendRedirect("/");
                 }
             })
             .permitAll()

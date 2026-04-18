@@ -50,7 +50,7 @@ public class AdministradorController {
     private PasswordEncoder passwordEncoder;
 
     // ==========================================
-    // SECCIÓN 0: INICIO / BIENVENIDA
+    // SECCIÓN 0: INICIO / BIENVENIDA :v
     // ==========================================
     @GetMapping("/inicio")
     public String inicioAdmin(Model model, Authentication authentication) {
@@ -66,6 +66,7 @@ public class AdministradorController {
 
     // ==========================================
     // SECCIÓN 1: INDIVIDUOS (CLIENTES/GENERAL)
+    //acodarme a crear un (cliente final ) por si no quieren registrase 
     // ==========================================
 
     @GetMapping("/individuos")
@@ -119,7 +120,8 @@ public class AdministradorController {
     
 
     // ==========================================
-    // SECCIÓN 2: EMPLEADOS (CARGOS)
+    // SECCIÓN 2: EMPLEADOS (CARGOS) 
+    // necesito darles sesiones de resto está completo hasta sus roles xd
     // ==========================================
 
     @GetMapping("/empleados")

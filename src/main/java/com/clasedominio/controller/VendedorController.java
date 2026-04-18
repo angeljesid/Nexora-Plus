@@ -24,7 +24,9 @@ public class VendedorController {
     @Autowired
     private IIndividuoService individuoService;
 
-    // Panel principal del vendedor
+    //=========================================
+    // En Proceso de creación :v voy a colocar un inicio en ves del sashboard
+    //=========================================
     @GetMapping("/dashboard")
     public String dashboardVendedor(Model model, Authentication authentication) {
         if (authentication != null) {
@@ -35,21 +37,19 @@ public class VendedorController {
             }
         }
         
-        // Datos rápidos para el vendedor
+  
         model.addAttribute("totalProductos", productoService.listarProductos().size());
         model.addAttribute("totalClientes", individuoService.listarIndividuos().size());
         
-        return "vista/vendedor/dashboard_vendedor"; // Debes crear este HTML
+        return "vista/vendedor/dashboard_vendedor";
     }
 
-    // Ver inventario (Solo lectura para el vendedor)
     @GetMapping("/productos")
     public String listarProductos(Model model) {
         model.addAttribute("listaProductos", productoService.listarProductos());
         return "vista/vendedor/productos_vendedor";
     }
 
-    // Ver clientes
     @GetMapping("/clientes")
     public String listarClientes(Model model) {
         model.addAttribute("lista", individuoService.listarIndividuos());
