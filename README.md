@@ -1,53 +1,68 @@
-# 🚀 Nexora Plus - Gestión Administrativa Inteligente
+# 🚀 Nexora Plus - Sistema de Gestión Empresarial
 
-**Nexora Plus** es una plataforma integral (ERP) diseñada para centralizar operaciones empresariales, optimizar recursos y potenciar el crecimiento operativo. Desarrollado con una arquitectura escalable y moderna, permite la gestión eficiente de inventarios, facturación y control de usuarios.
+**Nexora Plus** es una aplicación web desarrollada con **Spring Boot** que permite gestionar inventario, ventas y acceso de usuarios mediante roles.
 
-![Nexora Plus Banner](https://img.shields.io/badge/Backend-Java%20Spring%20Boot-brightgreen)
-![Nexora Plus Banner](https://img.shields.io/badge/Frontend-Tailwind%20CSS-blue)
-![Nexora Plus Banner](https://img.shields.io/badge/Database-MySQL-blue)
+El objetivo del proyecto es simular una solución real para pequeñas empresas, aplicando buenas prácticas de desarrollo backend.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-### **Backend**
-* **Java 17** con **Spring Boot 3.x**
-* **Spring Security**: Control de acceso basado en roles (Admin, Vendedor).
-* **Spring Data JPA**: Gestión de persistencia y base de datos.
-* **Thymeleaf**: Motor de plantillas para vistas dinámicas.
+### 🔹 Backend
+- Java 17  
+- Spring Boot  
+- Spring Security (autenticación y roles)  
+- Spring Data JPA  
+- MySQL  
 
-### **Frontend**
-* **Tailwind CSS**: Diseño responsivo y moderno.
-* **FontAwesome**: Iconografía profesional.
-* **Google Fonts (Inter)**: Tipografía optimizada para lectura.
+### 🔹 Frontend
+- Thymeleaf  
+- Tailwind CSS  
+- FontAwesome  
 
-### **Herramientas de Desarrollo**
-* **Maven**: Gestión de dependencias.
-* **MySQL**: Almacenamiento de datos relacional.
-
----
-
-## ✨ Características Principales
-
-* **Dashboard Inteligente**: Visualización de estados operativos en tiempo real.
-* **Gestión de Inventario**: Control de stock, entradas y salidas.
-* **Seguridad Robusta**: Sistema de autenticación con protección contra vulnerabilidades comunes.
-* **Interfaz Responsiva**: Optimizado para dispositivos móviles y escritorio.
-* **Landing Page Profesional**: Sección de presentación con desplazamiento suave y diseño minimalista.
+### 🔹 Herramientas
+- Maven  
 
 ---
 
-## 📸 Vista Previa
+## ✨ Funcionalidades
 
-> **Landing Page**: Presentación del ecosistema Nexora con Smooth Scroll.
-> **Login**: Sistema de acceso personalizado con validación de credenciales.
+- 📦 Gestión de productos (crear, editar, eliminar)  
+- 🛒 Registro de ventas  
+- 📊 Control básico de inventario  
+- 🔐 Sistema de login con roles:
+  - ADMIN  
+  - VENDEDOR  
+  - BODEGUERO  
+  - SECRETARIA  
 
 ---
 
-## 🚀 Instalación y Configuración
+## 🔐 Seguridad
 
-Sigue estos pasos para ejecutar el proyecto localmente:
+El sistema implementa seguridad con **Spring Security**:
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone [https://github.com/tu-usuario/nexora-plus.git](https://github.com/tu-usuario/nexora-plus.git)
+- Contraseñas encriptadas con BCrypt  
+- Autenticación con `UserDetailsService`  
+- Control de acceso por rutas según el rol  
+- Redirección automática después del login según el tipo de usuario  
+
+---
+
+## 🏗️ Estructura del proyecto
+
+El proyecto sigue una arquitectura por capas:
+
+- `controller` → Manejo de peticiones HTTP  
+- `service` → Lógica de negocio  
+- `repository` → Acceso a datos  
+- `domain` → Entidades  
+
+---
+
+## 🚀 Instalación y ejecución
+
+### 1. Clonar repositorio
+
+```bash
+git clone https://github.com/angeljesid/Nexora-Plus.git
