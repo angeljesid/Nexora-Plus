@@ -61,7 +61,7 @@ public class AdministradorController {
                 model.addAttribute("nombreCompleto", empleado.getNombre() + " " + empleado.getApellido());
             }
         }
-        return "vista/inicio";
+        return "vista/dashboard";
     }
 
     // ==========================================
