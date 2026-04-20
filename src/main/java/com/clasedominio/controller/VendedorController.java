@@ -1,10 +1,13 @@
 package com.clasedominio.controller;
 
+//servicios
 import com.clasedominio.domain.*;
 import com.clasedominio.service.empleado.IEmpleadoService;
 import com.clasedominio.service.producto.IProductoService;
 import com.clasedominio.service.individuo.IIndividuoService;
 import com.clasedominio.service.venta.IVentaService;
+
+//spring framework
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,9 @@ public class VendedorController {
     @Autowired
     private IVentaService ventaService;
 
+    //===============================================
+    // PUNTO DE VENTA
+    //===============================================
     @GetMapping("/inicio")
     public String puntoDeVenta(Model model, Authentication authentication) {
         if (authentication != null) {
@@ -69,12 +75,9 @@ public class VendedorController {
         }
     }
 
-    // BUSCAR POR NOMBRE (Para el buscador predictivo)
     @GetMapping("/buscar-nombre")
     @ResponseBody
     public List<Producto> buscarPorNombre(@RequestParam ("term") String term) {
-        // IMPORTANTE: Este método debe devolver una lista filtrada por el nombre
-        // usando findByNombreContaining en tu DAO
         return productoService.buscarProducto(term);
     }
 
@@ -93,4 +96,16 @@ public class VendedorController {
                                  .body("{\"mensaje\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    //===============================================
+    // HISTORIAL DE VENTAS
+    //===============================================
+    @GetMapping("/historial")
+public String historialVentas(Model model) {
+    List<Venta> ventas = ventaService.listarVentas();
+    model.addAttribute("ventas", ventas);
+    return "vendedor/historial_ventas"; // Crearemos este HTML
+}
+
+
 }

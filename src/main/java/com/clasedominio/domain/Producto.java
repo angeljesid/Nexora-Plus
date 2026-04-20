@@ -4,10 +4,13 @@ import java.math.BigDecimal;
 import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
 @Table(name = "producto")
+// Esta anotación es el "escudo" contra el error 500 de Hibernate Lazy
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class Producto {
 
     @Id
@@ -23,22 +26,20 @@ public class Producto {
     
     private int stock;
 
-    // ESPECIFICA EL NOMBRE DE LA COLUMNA EXACTO DE TU BASE DE DATOS
     @Column(name = "codigoBarras") 
     private String codigoBarras;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prov_fk")
-    // IMPORTANTE: Evita errores de recursividad al convertir a JSON para el buscador
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+    // @JsonIgnore es la solución definitiva: evita que el historial 
+    // intente cargar al proveedor, que no es necesario en la tabla de ventas
+    @JsonIgnore 
     private Proveedor proveedor; 
 
     @Transient
     public BigDecimal getPrecioPublico() {
         if (precio == null) return BigDecimal.ZERO;
         if (iva == null) return precio;
-        
-        // Si el IVA en tu DB es 0.19, esto funciona: precio + (precio * 0.19)
         return precio.add(precio.multiply(iva));
     }
 }

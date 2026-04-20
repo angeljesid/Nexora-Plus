@@ -1,9 +1,9 @@
-package com.clasedominio.dao;
+    package com.clasedominio.dao;
 
-import com.clasedominio.domain.Venta;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+    import com.clasedominio.domain.Venta;
+    import org.springframework.data.repository.CrudRepository;
+    import org.springframework.stereotype.Repository;
 
-@Repository
-public interface VentaDao extends CrudRepository<Venta, Integer> {
-}
+    @Repository
+    public interface VentaDao extends CrudRepository<Venta, Integer> {
+    }
