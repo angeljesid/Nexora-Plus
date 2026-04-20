@@ -7,10 +7,11 @@ import java.util.Optional;
 
 public interface ProductoDao extends CrudRepository<Producto, Integer> {
 
+    Optional<Producto> findByCodigoBarras(String codigoBarras);
+
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
     List<Producto> findByNombreContaining(String keyword);
     
-    Optional<Producto> findByCodigoBarras(String codigoBarras);
     List<Producto> findByCodigoBarrasContaining(String codigoBarras);
 
     // Busca todos los productos ordenados por stock ascendente

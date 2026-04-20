@@ -3,6 +3,7 @@ package com.clasedominio.domain;
 import java.math.BigDecimal;
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity
@@ -15,25 +16,29 @@ public class Producto {
     private Integer idP;
 
     private String nombre;
+    
     private BigDecimal precio;
+    
     private BigDecimal iva;
+    
     private int stock;
+
+    // ESPECIFICA EL NOMBRE DE LA COLUMNA EXACTO DE TU BASE DE DATOS
+    @Column(name = "codigoBarras") 
     private String codigoBarras;
 
-    // --- NUEVA RELACIÓN ---
-    @ManyToOne(fetch = FetchType.LAZY) // Lazy para que solo cargue el proveedor
-    @JoinColumn(name = "id_prov_fk") // El nombre de la columna en la tabla SQL
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_prov_fk")
+    // IMPORTANTE: Evita errores de recursividad al convertir a JSON para el buscador
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     private Proveedor proveedor; 
 
     @Transient
     public BigDecimal getPrecioPublico() {
-        if (precio == null || iva == null) {
-            return BigDecimal.ZERO;
-        }
-        // Multiplica precio * (1 + iva) si iva es un porcentaje decimal
+        if (precio == null) return BigDecimal.ZERO;
+        if (iva == null) return precio;
+        
+        // Si el IVA en tu DB es 0.19, esto funciona: precio + (precio * 0.19)
         return precio.add(precio.multiply(iva));
-
     }
-
-
 }

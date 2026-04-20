@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexora Plus - POS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/imagenes/css/vendedor.css}">
+    <style>
+        /* Bordes más redondeados para las tarjetas */
+        .card { 
+            border-radius: 15px !important; 
+            border: none; 
+        }
+        
+        .cliente-registrado { background-color: #d1e7dd !important; border-color: #a3cfbb !important; color: #0f5132; }
+        .cliente-anonimo { background-color: #f8f9fa !important; border-color: #dee2e6 !important; color: #6c757d; }
+        
+        .sugerencias-box { 
+            position: absolute; z-index: 1050; width: 100%; 
+            max-height: 250px; overflow-y: auto; 
+            border-radius: 0 0 15px 15px;
+        }
+
+        /* Botón de eliminar más estético */
+        .btn-delete {
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .input-group-text, .form-control, .btn {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body th:style="'background-image: url(' + @{/imagenes/fondo-patron.png} + '); background-attachment: fixed;'">
+
+    <nav th:replace="~{vendedor/barra :: sidebar-vendedor('venta')}"></nav>
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="row g-4 mt-2">
+                <div class="col-lg-4">
+                    <div class="card shadow-sm p-3 mb-3">
+                        <label class="fw-bold mb-2">Cédula Cliente</label>
+                        <div class="input-group">
+                            <input type="text" id="cedulaInput" class="form-control" placeholder="Presione Enter para buscar...">
+                            <button class="btn btn-primary" onclick="buscarCliente()"><i class="bi bi-search"></i></button>
+                        </div>
+                        <div id="clienteStatus" class="mt-2 p-2 rounded text-center small fw-bold" style="display:none;"></div>
+                    </div>
+
+                    <div class="card shadow-sm p-3 mb-3">
+                        <label class="fw-bold mb-2">Buscar por Nombre</label>
+                        <div class="position-relative">
+                            <input type="text" id="nombreBusqueda" class="form-control" 
+                                placeholder="Escriba marca o modelo..." autocomplete="off"
+                                oninput="sugerirProductos()">
+                            <div id="listaSugerencias" class="list-group sugerencias-box shadow"></div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm p-3 mb-3">
+                        <label class="fw-bold mb-2">Código de Barras</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                            <input type="text" id="codigoInput" class="form-control" placeholder="Escanear...">
+                            <button class="btn btn-dark" onclick="agregarPorCodigo()">Agregar</button>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm p-4 bg-white">
+                        <p class="text-muted small fw-bold mb-1">TOTAL A PAGAR</p>
+                        <h1 class="fw-bold text-primary">$<span id="totalVenta">0</span></h1>
+                        <button class="btn btn-success btn-lg w-100 mt-3 py-3 fw-bold" onclick="finalizarVenta()" style="border-radius: 12px;">
+                            <i class="bi bi-cash-stack"></i> REGISTRAR VENTA
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card shadow-sm p-4" style="min-height: 550px;">
+                        <h5 class="mb-4"><i class="bi bi-cart3"></i> Detalle de Venta</h5>
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th class="text-end">Precio</th>
+                                    <th style="width: 100px;">Cant.</th>
+                                    <th class="text-end">Subtotal</th>
+                                    <th class="text-center">Stock</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleVenta"></tbody>
+                        </table>
+                        <div id="cartEmpty" class="text-center text-muted mt-5">
+                            <i class="bi bi-basket2" style="font-size: 3rem;"></i>
+                            <p>El carrito está vacío</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let carrito = [];
+        let clienteSeleccionado = null;
+
+        // --- BUSCAR CLIENTE CON ENTER ---
+        document.getElementById('cedulaInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                buscarCliente();
+            }
+        });
+
+        async function buscarCliente() {
+            const cedula = document.getElementById('cedulaInput').value;
+            if(!cedula) return;
+            const resp = await fetch(`/vendedor/buscar-cliente/${cedula}`);
+            clienteSeleccionado = await resp.json();
+            
+            const div = document.getElementById('clienteStatus');
+            div.style.display = 'block';
+            div.innerText = `CLIENTE: ${clienteSeleccionado.nombre} ${clienteSeleccionado.apellido}`;
+            
+            div.className = clienteSeleccionado.idIndividuo 
+                ? "mt-2 p-2 rounded text-center small fw-bold cliente-registrado"
+                : "mt-2 p-2 rounded text-center small fw-bold cliente-anonimo";
+        }
+
+        // --- BUSCADOR PREDICTIVO ---
+        async function sugerirProductos() {
+            const term = document.getElementById('nombreBusqueda').value;
+            const box = document.getElementById('listaSugerencias');
+            if(term.length < 1) { box.innerHTML = ''; return; }
+            
+            try {
+                const resp = await fetch(`/vendedor/buscar-nombre?term=${term}`);
+                const productos = await resp.json();
+                box.innerHTML = productos.map(p => `
+                    <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" 
+                            onclick='seleccionarSugerencia(${JSON.stringify(p)})'>
+                        <span>${p.nombre} <small class="text-muted">(${p.stock} disp.)</small></span>
+                        <span class="badge bg-primary">$${p.precio}</span>
+                    </button>
+                `).join('');
+            } catch (e) { console.error("Error buscando:", e); }
+        }
+
+        function seleccionarSugerencia(p) {
+            agregarAlCarrito(p);
+            document.getElementById('listaSugerencias').innerHTML = '';
+            document.getElementById('nombreBusqueda').value = '';
+        }
+
+        async function agregarPorCodigo() {
+            const code = document.getElementById('codigoInput').value;
+            if(!code) return;
+            const resp = await fetch(`/vendedor/buscar-producto/${code}`);
+            if(resp.ok) {
+                const producto = await resp.json();
+                agregarAlCarrito(producto);
+                document.getElementById('codigoInput').value = '';
+            } else { 
+                alert("Producto no encontrado"); 
+            }
+        }
+
+        function agregarAlCarrito(p) {
+            const existe = carrito.find(item => item.id === p.idP);
+            if(p.stock <= 0) return alert("Sin existencias");
+            
+            if(existe) {
+                if(existe.cantidad < p.stock) existe.cantidad++;
+                else alert("No hay más stock");
+            } else {
+                carrito.push({ id: p.idP, nombre: p.nombre, precio: p.precio, cantidad: 1, stock: p.stock });
+            }
+            renderizar();
+        }
+
+        function renderizar() {
+            const tbody = document.getElementById('detalleVenta');
+            document.getElementById('cartEmpty').style.display = carrito.length ? 'none' : 'block';
+            tbody.innerHTML = '';
+            let total = 0;
+            
+            carrito.forEach((item, i) => {
+                let sub = item.precio * item.cantidad;
+                total += sub;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.nombre}</strong></td>
+                        <td class="text-end">$${item.precio.toLocaleString()}</td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" 
+                                value="${item.cantidad}" onchange="actualizar(${i}, this.value)" 
+                                min="1" max="${item.stock}">
+                        </td>
+                        <td class="text-end fw-bold text-primary">$${sub.toLocaleString()}</td>
+                        <td class="text-center"><span class="badge bg-light text-dark border">${item.stock}</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-outline-danger btn-delete mx-auto" onclick="eliminar(${i})">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+            document.getElementById('totalVenta').innerText = total.toLocaleString();
+        }
+
+        function actualizar(i, c) { 
+            let valor = parseInt(c);
+            if(valor > carrito[i].stock) {
+                alert("Excede el stock");
+                carrito[i].cantidad = carrito[i].stock;
+            } else {
+                carrito[i].cantidad = valor; 
+            }
+            renderizar(); 
+        }
+
+        function eliminar(i) { carrito.splice(i, 1); renderizar(); }
+
+        async function finalizarVenta() {
+            if(!carrito.length) return alert("El carrito está vacío");
+            if(!clienteSeleccionado) return alert("Busque un cliente");
+
+            const data = {
+                cliente: { idIndividuo: clienteSeleccionado.idIndividuo },
+                total: parseFloat(document.getElementById('totalVenta').innerText.replace(/,/g, '')),
+                detalles: carrito.map(i => ({ 
+                    producto: { idP: i.id }, 
+                    cantidad: i.cantidad, 
+                    precioUnitario: i.precio, 
+                    subtotal: i.precio * i.cantidad 
+                }))
+            };
+
+            const res = await fetch('/vendedor/guardar-venta', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify(data) 
+            });
+
+            if(res.ok) { 
+                alert("Venta registrada"); 
+                location.reload(); 
+            }
+        }
+    </script>
+</body>
+</html>

@@ -21,15 +21,17 @@ public class Individuo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long idIndividuo;
-    @NotEmpty//no permirmite que el espacio sea vacio
+    @NotEmpty
+    private String cedula;
+    @NotEmpty
     private String nombre;
-    @NotEmpty//no permirmite que el espacio sea vacio
+    @NotEmpty
     private String apellido;
-    @NotNull//no permirmite que el espacio sea nulo
+    @NotNull
     private int edad;
-    @NotEmpty//no permirmite que el espacio sea vacio
+    @NotEmpty
     private String correo;
-    @NotEmpty//no permirmite que el espacio sea vacio
+    @NotEmpty
     private String telefono;    
 }
 

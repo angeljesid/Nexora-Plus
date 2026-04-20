@@ -37,7 +37,14 @@ public class IndividuoService implements IIndividuoService {
     @Transactional(readOnly = true)//le dice al sql que solo va a leer
     public Individuo buscarIndividuo(Individuo individuo) {
         return individuoDao.findById(individuo.getIdIndividuo()).orElse(null);
-    }// buca por id, si no lo encuentra devuelve null
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Individuo buscarPorCedula(String cedula) {
+        return individuoDao.findByCedula(cedula);
+    }
+
 }
 
 

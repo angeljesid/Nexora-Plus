@@ -6,8 +6,9 @@ import java.util.List;
 public interface IIndividuoService {
     public List<Individuo> listarIndividuos();
     public void guardarIndividuo(Individuo individuo);
-    public void eliminarIndividuo(Long id); // Unificado a Long
-    public Individuo buscarIndividuo(Individuo individuo); //
+    public void eliminarIndividuo(Long id);
+    public Individuo buscarIndividuo(Individuo individuo);
+    Individuo buscarPorCedula(String cedula);
 }
 
 

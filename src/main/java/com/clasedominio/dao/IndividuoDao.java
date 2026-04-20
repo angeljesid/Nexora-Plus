@@ -8,5 +8,6 @@ public interface IndividuoDao extends CrudRepository<Individuo, Long> {
     
     // Spring leerá este nombre y creará la consulta SQL automáticamente
     List<Individuo> findByNombreContainingIgnoreCase(String nombre);
+    Individuo findByCedula(String cedula);
     
 }

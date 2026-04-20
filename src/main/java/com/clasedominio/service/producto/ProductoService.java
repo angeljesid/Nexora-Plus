@@ -34,7 +34,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public List<Producto> buscarProducto(String keyword) {
-        return productoDao.findByNombreContaining(keyword);
+        return productoDao.findByNombreContainingIgnoreCase(keyword);
     }
 
     @Override
@@ -46,4 +46,10 @@ public class ProductoService implements IProductoService {
     public List<Producto> obtenerTopStockBajo() {
     return productoDao.findTop3ByOrderByStockAsc();
 }
+
+    @Override
+    public Producto buscarPorCodigo(String codigo) {
+    return productoDao.findByCodigoBarras(codigo).orElse(null);
+}
+
 }

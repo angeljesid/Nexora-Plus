@@ -1,45 +1,69 @@
-/* Esto hace que la pantalla se divida en dos paneles */
-.login-layout {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr; /* Panel azul un poco más ancho */
-    min-height: 100vh;
-    align-items: stretch;
-    gap: 0;
-}
-
-/* Ajuste para que en celulares se vea uno arriba del otro */
-@media (max-width: 768px) {
-    .login-layout {
-        grid-template-columns: 1fr;
-    }
-}
 :root {
-    /* El azul oscuro que usaste en el panel izquierdo del login */
     --sidebar-bg: #0d4761; 
-    --navbar-bg: #ffffff;
-    --accent-color: #ff9800; /* El naranja del logo */
+    --accent-color: #ff9800;
+    --sidebar-width: 260px;
+    --topbar-height: 70px;
 }
 
-/* El encabezado del sidebar ahora será oscuro como el login */
-#sidebar .sidebar-header { 
-    background: #0d4761; 
-    border-bottom: 1px solid rgba(255,255,255,0.1); 
+/* Contenedor principal para que el contenido no quede debajo del sidebar */
+.content-wrapper {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    transition: all 0.3s;
 }
 
-/* Color del texto del logo en el dashboard */
-#sidebar .sidebar-header h4 { color: #ffffff !important; }
-#sidebar .sidebar-header span { color: #ff9800 !important; }
-#sidebar ul li a {
-    color: rgba(255, 255, 255, 0.8); /* Blanco suave para que no canse la vista */
+/* La Barra Superior con tus colores */
+.top-bar {
+    height: var(--topbar-height);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px); /* Efecto moderno de transparencia */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 99;
 }
 
-#sidebar ul li a:hover {
+/* Sidebar Ajustado */
+#sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--sidebar-bg);
+    color: white;
+    z-index: 1000;
+}
+
+/* Estilos de tus enlaces (Mantenidos) */
+#sidebar .nav-link-custom {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 12px 20px;
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+#sidebar .nav-link-custom:hover, 
+#sidebar .nav-link-custom.active {
     background: rgba(255, 255, 255, 0.1);
     color: var(--accent-color);
+    border-right: 4px solid var(--accent-color);
 }
 
-#sidebar ul li.active > a {
-    background: rgba(255, 255, 255, 0.2);
-    color: var(--accent-color);
-    border-right: 4px solid var(--accent-color);
+/* Tarjetas Redondeadas */
+.card-custom {
+    border: none;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background: white;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper { margin-left: 0; }
+    #sidebar { margin-left: calc(-1 * var(--sidebar-width)); }
 }

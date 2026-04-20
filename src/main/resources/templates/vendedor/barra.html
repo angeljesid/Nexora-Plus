@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<nav id="sidebar" th:fragment="sidebar-vendedor(seccion)">
+    <div class="sidebar-brand">
+        <div class="d-flex justify-content-center">
+            <div style="width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                <i class="bi bi-intersect text-dark fs-4"></i>
+            </div>
+        </div>
+        <h4 class="mb-0">Nexora <span style="color: var(--nexora-gold);">Plus</span></h4>
+        <small class="text-white-50">Panel de Ventas</small>
+    </div>
+
+    <ul class="sidebar-nav">
+        <li class="nav-item">
+            <a th:href="@{/vendedor/inicio}" class="nav-link-custom" 
+               th:classappend="${seccion == 'venta'} ? 'active' : ''">
+                <i class="bi bi-cart4"></i> Terminal POS
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/vendedor/clientes}" class="nav-link-custom"
+               th:classappend="${seccion == 'clientes'} ? 'active' : ''">
+                <i class="bi bi-people"></i> Clientes
+            </a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/vendedor/historial}" class="nav-link-custom"
+               th:classappend="${seccion == 'historial'} ? 'active' : ''">
+                <i class="bi bi-receipt"></i> Mis Ventas
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-btn">
+                <i class="bi bi-power"></i> Cerrar sesión
+            </button>
+        </form>
+    </div>
+</nav>
+
+</body>
+</html>

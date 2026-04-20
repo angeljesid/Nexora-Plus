@@ -19,6 +19,7 @@ public interface IProductoService {
 
     public List<Producto> obtenerTopStockBajo();
 
+    Producto buscarPorCodigo(String codigoBarras);
 
 
 }
